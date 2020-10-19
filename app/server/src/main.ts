@@ -1,66 +1,79 @@
+// node imports
 import path from "path";
+
+// library imports
 import { google } from "googleapis";
 import express, { Request, Response, Express, NextFunction } from "express";
-import cors from "cors";
 
+// oauth client setup
 const KEY_PATH = path.join(__dirname, "../../secrets/client_secret.json");
 const KEY = require(KEY_PATH);
-const scopes = ["https://www.googleapis.com/auth/youtube.readonly"];
-
-// create the oauth client
+const SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"];
 const oAuth2Client = new google.auth.OAuth2(KEY.web.client_id, KEY.web.client_secret, KEY.web.redirect_uris[0]);
 
 const app: Express = express();
 
+//  handle JSON in request bodies
 app.use(express.json());
 
+// point to our static files (the Client)
 app.use("/", express.static(path.join(__dirname, "../../client/dist")));
 
-// app.use(cors());
-// Custom middleware for handling CORS.
+// Custom middleware funciton to enable CORS, so the API can be called from everywhere
 app.use(function (inRequest: Request, inResponse: Response, inNext: NextFunction) {
-	// lists allowed domains; * allows every call to come through
 	inResponse.header("Access-Control-Allow-Origin", "*");
-	// lists HTTP methods to be accepted from external calls; if
-	// none are specified, none will come through
 	inResponse.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
-	// configure additional headers;
 	inResponse.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept");
 	inNext();
 });
 
-app.get("/echo", function (inRequest: Request, inResponse: Response) {
-	console.log("Echo has been sent!");
-	inResponse.send("Hello from echo!");
+// -----------------------------RESTful endpoint operations begin ---------------------------------
+
+// test endpoint for server response
+app.get("/hello", function (inRequest: Request, inResponse: Response) {
+	console.log("Hello world has been sent!");
+	inResponse.send("Hello world!");
 });	
 
+// Return redirect link to google's authorization services
 app.get("/request_permission", function (inRequest: Request, inResponse: Response) {
 	try {
 		const authorizationURL = oAuth2Client.generateAuthUrl({
 			access_type: "offline",
-			scope: scopes,
+			scope: SCOPES,
 		});
-		inResponse.send({authorizationURL: authorizationURL});
+		inResponse.json({authorizationURL: authorizationURL});
 	} catch (inError) {
 		inResponse.send(`An error has occured trying to request access permission. \n ${inError}`);
 	}
 });
 
+// Receive user permission code
 app.get("/exchange_code", async function (inRequest: Request, inResponse: Response) {
 	try {
-		// The user decides whether to grant the permissions
-		// Receive the users decision
-		// If the user allows it, get tokens.
-		// TODO: handle a case where access has not been granted
 		const tokenCode = new URL(inRequest.url, KEY.web.redirect_uris[0]).searchParams.get("code");
-		const { tokens } = await oAuth2Client.getToken(<string>tokenCode);
-		oAuth2Client.setCredentials(tokens);
-		inResponse.redirect(301, "/echo");
+		if(tokenCode !== null) {
+			const { tokens } = await oAuth2Client.getToken(<string>tokenCode);
+			oAuth2Client.setCredentials(tokens);
+			inResponse.redirect(301, "/hello");
+		}
+		inResponse.status(401).send("The user denied Youtube account access.");
 	} catch (inError) {
-		inResponse.status(400).send(`An error has occured trying to set user credentials \n ${inError}`);
+		inResponse.status(400).send(`An error has occured trying to exchange access code \n ${inError}`);
 	}
 });
 
+// Revoke the credentials token
+app.get("/revoke_token", async function (inRequest: Request, inResponse: Response) {
+	try {
+		await oAuth2Client.revokeCredentials();
+		inResponse.status(200).send("OK - Credentials revoked");
+	} catch (inError) {
+		inResponse.send(`An error has occured trying to revoke authorization token. \n ${inError}`);
+	}
+});
+
+// Get information about the current user's created playlists. (Doesnt return saved playlists!)
 app.get("/current_user_playlists", async function (inRequest: Request, inResponse: Response) {
 	try {
 		const youtube = google.youtube({ version: "v3", auth: oAuth2Client });
@@ -69,21 +82,13 @@ app.get("/current_user_playlists", async function (inRequest: Request, inRespons
 			mine: true,
 			maxResults: 50,
 		});
-		inResponse.send(playlists.data);
+		inResponse.json(playlists.data);
 	} catch (inError) {
 		inResponse.send(`An error has occured trying to access the current user's playlist. \n ${inError}`);
 	}
 });
 
-app.get("/revoke_token", async function (inRequest: Request, inResponse: Response) {
-	try {
-		await oAuth2Client.revokeCredentials();
-		inResponse.send("Credentials revoked");
-	} catch (inError) {
-		inResponse.send(`An error has occured trying to revoke authorization token. \n ${inError}`);
-	}
-});
-
+// Start app listening 
 app.listen(3000, () => {
 	console.log("Server is listening on port 3000");
 });
