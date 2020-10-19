@@ -1,7 +1,7 @@
 # YoutubePlaylistOrganizer
 Independent project for application that augments YouTube playlist interaction. 
 
-The aim of this project is build on top of what I have learned in F.Zammeti's book "Modern Full-Stack Development: Using TypeScript, React, Node.js, Webpack, and Docker".
+The aim of this project is my own personal exercise. It builds on top of what I have learned in F.Zammeti's book "Modern Full-Stack Development: Using TypeScript, React, Node.js, Webpack, and Docker".
 
 ## Concept
 
