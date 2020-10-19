@@ -2,6 +2,7 @@ import * as API from "./api";
 
 export function createState(inParentComponent: React.Component) {
     return {
+        currentView: <string> "",
         ownPlaylists: <Object> [], 
 
         handleGoogleLogin: async function (): Promise<void> {
