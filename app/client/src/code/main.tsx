@@ -5,4 +5,4 @@ import ReactDOM from "react-dom";
 
 import BaseLayout from "./components/BaseLayout";
 
-const BaseComponent = ReactDOM.render(<BaseLayout/>, document.body);
+const BaseComponent = ReactDOM.render(<BaseLayout/>, document.getElementById("renderContainer"));
