@@ -1,6 +1,6 @@
 import React from "react";
 import { createState } from "../state";
-
+import LoginView from "./LoginView"
 
 class BaseLayout extends React.Component {
     state = createState(this);
@@ -9,7 +9,9 @@ class BaseLayout extends React.Component {
         return (
             <div className="applicationContainer">
                 {/* Display Login view if the user isnt authenticated */}
-
+                <div className="loginView">
+                    <LoginView state={this.state}/>
+                </div>
                 {/* Navigation controlling the different views
                             - Questions: 
                         What can the user see here?
@@ -47,10 +49,7 @@ class BaseLayout extends React.Component {
                         How does the user control the player?
                             - Answers:
 
-                */}
-
-
-                <button onClick = {this.state.handleGoogleLogin}>Login with Google</button>                
+                */}              
             </div>
         )
     }
