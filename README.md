@@ -14,3 +14,4 @@ The main idea is to enable additional funcionality to YouTube playlists.
 - Producing a PDF with user notes
 
 If you are interested in my personal thought process and approach to developing, I welcome you to see the trello board for this project.
+Trello board: https://trello.com/b/QfMH86Pl/playlist-butler
