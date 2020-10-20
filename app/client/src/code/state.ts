@@ -11,5 +11,11 @@ export function createState(inParentComponent: React.Component) {
             window.open(authorizationURL, "_self");
         }.bind(inParentComponent),
 
+        proceedWithoutLogin: function() {
+            const message = "Not implemented";
+            console.log(message);
+            return message;
+        }.bind(inParentComponent)
+
     }
 }
