@@ -1,3 +1,129 @@
 *, *::after, *::before {
     box-sizing: border-box;
 }
+
+/* Declaring custom css properties for code reusability */
+:root {
+    /* Primary and secondary colors */
+    --clr-primary: #fafafa;
+    --clr-primary-variant: #c7c7c7;
+    --clr-secondary: #ffc107;
+    --clr-secondary-variant: #c79100;
+
+    /* Background, surface and error colors */
+    --clr-background: #FFFFFF;
+    --clr-surface: #FFFFFF;
+    --clr-error: #b00020;
+    
+    /* Typography and iconography colors */
+    --clr-on-primary: #000000;
+    --clr-on-secondary: #000000;
+    --clr-on-background: #000000;
+    --clr-on-surface: #000000;
+    --clr-on-error: #FFFFFF;
+
+    /* Font sizes */
+    --fs-h1: 3rem;
+	--fs-h2: 2.25rem;
+	--fs-h3: 1.25rem;
+	--fs-body: 1rem;
+    
+}
+
+/* General styles */
+
+body {
+    background-color:#c2c2c2;
+    color: var(--clr-on-primary);
+    font-size: var(--fs-body);
+    line-height: 1;
+    margin: 0;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+	line-height: 1;
+	margin: 0;
+}
+
+h1 { font-size: var(--fs-h1) }
+h2 { font-size: var(--fs-h2) }
+h3 { font-size: var(--fs-h3) }
+
+    /* Overriding default button style */
+button {
+    display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: var(--clr-secondary); 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+button:focus {
+    outline: none
+}
+
+/* Material classes */
+.surface{
+    background-color: var(--clr-surface);
+    color: var(--clr-on-surface);
+}
+
+.background{
+    background-color: var(--clr-background);
+    color: var(--clr-on-background);
+}
+
+.error{
+    background-color: var(--clr-error);
+    color: var(--clr-on-error);
+}
+
+.elementLevel1{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.elementLevel2{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.16), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* Component styles */
+.buttonStyle{
+    
+}
+
+/* Setting render and application container dimensions */
+#renderContainer {
+    width: 100vw;
+    height: 100vh;
+}
+
+.applicationContainer {
+    width: inherit;
+    height: inherit;
+}
+
+/* Login view */
+.loginView {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginForm {
+    width: 360px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
