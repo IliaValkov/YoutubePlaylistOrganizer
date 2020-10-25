@@ -11,7 +11,7 @@
     --clr-secondary-variant: #c79100;
 
     /* Background, surface and error colors */
-    --clr-background: #FFFFFF;
+    --clr-background: #c2c2c2;
     --clr-surface: #FFFFFF;
     --clr-error: #b00020;
     
@@ -28,16 +28,21 @@
 	--fs-h3: 1.25rem;
 	--fs-body: 1rem;
     
+    /* Box shadows*/
+    --bs-lvl1: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    --bs-lvl2: 0 10px 20px rgba(0,0,0,0.16), 0 6px 6px rgba(0,0,0,0.23);
+
 }
 
 /* General styles */
 
 body {
-    background-color:#c2c2c2;
+    background-color: var(--clr-background);
     color: var(--clr-on-primary);
     font-size: var(--fs-body);
     line-height: 1;
     margin: 0;
+    font-family: "Rubik", sans-serif;
 }
 
 /* Typography */
@@ -48,7 +53,8 @@ h1,
 h2,
 h3 {
 	line-height: 1;
-	margin: 0;
+	margin: 0.5rem;
+    font-family: "Patua One", cursive;
 }
 
 h1 { font-size: var(--fs-h1) }
@@ -62,11 +68,9 @@ button {
     padding: 1rem 2rem;
     margin: 0;
     text-decoration: none;
-    font-size: 1rem;
     cursor: pointer;
     text-align: center;
-    text-transform: uppercase;
-    background-color: var(--clr-secondary); 
+    text-transform: uppercase; 
     -webkit-appearance: none;
     -moz-appearance: none;
 }
@@ -79,6 +83,8 @@ button:focus {
 .surface{
     background-color: var(--clr-surface);
     color: var(--clr-on-surface);
+    box-shadow: var(--bs-lvl1);
+    border-radius: 5px;
 }
 
 .background{
@@ -91,16 +97,26 @@ button:focus {
     color: var(--clr-on-error);
 }
 
-.elementLevel1{
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-.elementLevel2{
-    box-shadow: 0 10px 20px rgba(0,0,0,0.16), 0 6px 6px rgba(0,0,0,0.23);
-}
-
 /* Component styles */
+.buttonStyle {
+    box-shadow: var(--bs-lvl1);
+    transition: filter 0.7s ease;
+    border-radius: 5px;
+}
 
+.buttonStyle:disabled{
+    opacity: 0.3;
+    background-color: var(--clr-primary-variant);
+    pointer-events: none;
+}
+
+.buttonStyle:not(:disabled):hover, .buttonStyle:not(:disabled):focus {
+    filter: brightness(110%);
+}
+
+.buttonStyle:not(:disabled):focus{
+
+}
 
 /* Setting render and application container dimensions */
 #renderContainer {
@@ -124,7 +140,20 @@ button:focus {
 .loginForm {
     width: 360px;
     height: 420px;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+.loginForm h2{
+    margin: 2rem
+}
+
+.loginForm button{
+    margin-top: 3rem;
+}
+
+.loginForm button + button{
+    background-color: var(--clr-secondary);
 }
