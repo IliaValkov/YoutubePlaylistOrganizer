@@ -41,6 +41,9 @@ body {
 }
 
 /* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
 h1,
 h2,
 h3 {
@@ -97,9 +100,7 @@ button:focus {
 }
 
 /* Component styles */
-.buttonStyle{
-    
-}
+
 
 /* Setting render and application container dimensions */
 #renderContainer {
