@@ -114,9 +114,6 @@ button:focus {
     filter: brightness(110%);
 }
 
-.buttonStyle:not(:disabled):focus{
-
-}
 
 /* Setting render and application container dimensions */
 #renderContainer {

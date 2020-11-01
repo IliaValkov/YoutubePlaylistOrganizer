@@ -52,13 +52,15 @@ app.get("/request_permission", function (inRequest: Request, inResponse: Respons
 app.get("/exchange_code", async function (inRequest: Request, inResponse: Response) {
 	try {
 		const tokenCode = new URL(inRequest.url, KEY.web.redirect_uris[0]).searchParams.get("code");
-		if(tokenCode === null) {
-			inResponse.status(401).send("The user denied Youtube account access.");
-			return;
+		let data = {authorized: false};
+		if(tokenCode !== null) {
+			const { tokens } = await oAuth2Client.getToken(<string>tokenCode);
+			oAuth2Client.setCredentials(tokens);
+			data.authorized = true;
 		} 
-		const { tokens } = await oAuth2Client.getToken(<string>tokenCode);
-		oAuth2Client.setCredentials(tokens);
-		inResponse.redirect(301, "/hello");
+		inResponse.json(data);
+		return;
+		
 	} catch (inError) {
 		inResponse.status(400).send(`An error has occured trying to exchange access code \n ${inError}`);
 	}
